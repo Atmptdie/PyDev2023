@@ -2,7 +2,18 @@ import cowsay
 import argparse
 
 
-parser = argparse.ArgumentParser(prog="cowsay")
+class CowsayArgumentParser(argparse.ArgumentParser):
+    '''
+    Needed only for custom help message as
+    the original class doesn't simply allow to change it
+    '''
+
+    def print_help(self):
+        print("""Usage: cowsay [-bdgpstwy] [-h] [-e eyes] [-f cowfile] 
+          [-l] [-n] [-T tongue] [-W wrapcolumn] [message]""")
+
+
+parser = CowsayArgumentParser(prog="cowsay")
 
 parser.add_argument("-e", dest="eyes")
 parser.add_argument("-f", dest="cow")
@@ -20,16 +31,17 @@ parser.add_argument("-w", dest="preset", action="store_const", const="w")
 parser.add_argument("-y", dest="preset", action="store_const", const="y")
 parser.add_argument("message")
 
-
 parsed_args = parser.parse_args().__dict__
 
 if parsed_args["show_cow_list"]:
     print(*cowsay.list_cows(), sep='\n')
     exit(0)
 
+used_args = set(("show_cow_list"))
+
 args_drop_none = {}
 for arg in parsed_args:
-    if parsed_args[arg] is not None and arg != "show_cow_list":
+    if parsed_args[arg] is not None and arg not in used_args:
         args_drop_none[arg] = parsed_args[arg]
 
 print(cowsay.cowsay(**args_drop_none))
