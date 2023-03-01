@@ -1,8 +1,8 @@
 import cowsay
 import argparse
 
-parser = argparse.ArgumentParser(prog="cowsay")
 
+parser = argparse.ArgumentParser(prog="cowsay")
 
 parser.add_argument("-e", dest="eyes")
 parser.add_argument("-f", dest="cow")
@@ -20,3 +20,16 @@ parser.add_argument("-w", dest="preset", action="store_const", const="w")
 parser.add_argument("-y", dest="preset", action="store_const", const="y")
 parser.add_argument("message")
 
+
+parsed_args = parser.parse_args().__dict__
+
+if parsed_args["show_cow_list"]:
+    print(*cowsay.list_cows(), sep='\n')
+    exit(0)
+
+args_drop_none = {}
+for arg in parsed_args:
+    if parsed_args[arg] is not None and arg != "show_cow_list":
+        args_drop_none[arg] = parsed_args[arg]
+
+print(cowsay.cowsay(**args_drop_none))
