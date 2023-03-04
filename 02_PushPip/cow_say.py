@@ -1,3 +1,4 @@
+#!/bin/python3
 import cowsay
 import argparse
 
@@ -29,7 +30,7 @@ parser.add_argument("-s", dest="preset", action="store_const", const="s")
 parser.add_argument("-t", dest="preset", action="store_const", const="t")
 parser.add_argument("-w", dest="preset", action="store_const", const="w")
 parser.add_argument("-y", dest="preset", action="store_const", const="y")
-parser.add_argument("message")
+parser.add_argument("message", nargs='+')
 
 parsed_args = parser.parse_args().__dict__
 
@@ -37,11 +38,10 @@ if parsed_args["show_cow_list"]:
     print(*cowsay.list_cows(), sep='\n')
     exit(0)
 
-used_args = set(("show_cow_list"))
-
+parsed_args["message"] = " ".join(parsed_args["message"])
 args_drop_none = {}
 for arg in parsed_args:
-    if parsed_args[arg] is not None and arg not in used_args:
+    if parsed_args[arg] is not None and arg != "show_cow_list":
         args_drop_none[arg] = parsed_args[arg]
 
 print(cowsay.cowsay(**args_drop_none))
