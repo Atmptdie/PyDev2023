@@ -2,6 +2,7 @@ import random
 from urllib.request import urlopen
 import os
 import argparse
+import cowsay
 
 
 def bullscows(guess: str, secret: str) -> "tuple[int, int]":
@@ -31,29 +32,31 @@ def bullscows(guess: str, secret: str) -> "tuple[int, int]":
 
 
 def ask(prompt: str, valid: "list[str]" = None) -> str:
-    word = input(prompt)
+    cow_skin = random.choice(cowsay.list_cows())
+    word = input(cowsay.cowsay(prompt, cow=cow_skin) + '\n')
+
     while not (valid is None or word in valid):
-        print(f"{word} is not a valid word! Try again\n")
-        word = input(prompt)
+        print(cowsay.cowsay(f"{word} is not a valid word! Try again", cow=cow_skin) + '\n')
+        word = input(cowsay.cowsay(prompt, cow=cow_skin) + '\n')
 
     return word
 
 
 def inform(format_string: str, bulls: int, cows: int) -> None:
-    print(format_string.format(bulls, cows))
+    cow_skin = random.choice(cowsay.list_cows())
+    print(cowsay.cowsay(format_string.format(bulls, cows), cow=cow_skin))
 
 
 def gameplay(ask: callable, inform: callable, words: "list[str]") -> int:
     attempts = 0
     secret = random.choice(words)
-    word = ask("Enter word: ", words)
+    word = ask("Enter word", words)
 
     while word != secret:
         bulls, cows = bullscows(word, secret)
         inform("Bulls: {}, Cows: {}", bulls, cows)
-        print("----------------------------\n")
 
-        word = ask("Enter word: ", words)
+        word = ask("Enter word", words)
 
     print(f"Congratulations! It was '{secret}'. Attempts: {attempts}")
 
