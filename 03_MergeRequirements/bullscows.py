@@ -86,7 +86,7 @@ if __name__ == "__main__":
     words = None
     if is_local_file:
         with open(words_source, "r", encoding='utf-8') as f:
-            words = f.readlines()
+            words = [w.strip() for w in f.readlines()]
     else:
         print("Trying to open url...")
         try:
