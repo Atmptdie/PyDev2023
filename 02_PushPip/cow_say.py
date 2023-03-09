@@ -11,7 +11,7 @@ class CowsayArgumentParser(argparse.ArgumentParser):
     '''
 
     def print_help(self):
-        print("""Usage: cowsay [-bdgpstwy] [-h] [-e eyes] [-f cowfile] 
+        print("""Usage: cowsay [-bdgpstwy] [-h] [-e eyes] [-f cowfile]
           [-l] [-n] [-T tongue] [-W wrapcolumn] [message]""")
 
 
