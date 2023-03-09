@@ -44,7 +44,7 @@ def inform(format_string: str, bulls: int, cows: int) -> None:
 
 
 def gameplay(ask: callable, inform: callable, words: "list[str]") -> int:
-    attempts = 0
+    attempts = 1
     secret = random.choice(words)
     word = ask("Enter word: ", words)
 
@@ -54,6 +54,7 @@ def gameplay(ask: callable, inform: callable, words: "list[str]") -> int:
         print("----------------------------\n")
 
         word = ask("Enter word: ", words)
+        attempts += 1
 
     print(f"Congratulations! It was '{secret}'. Attempts: {attempts}")
 
