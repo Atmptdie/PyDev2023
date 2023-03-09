@@ -3,6 +3,7 @@ from urllib.request import urlopen
 import os
 import argparse
 import cowsay
+from io import StringIO
 
 
 def bullscows(guess: str, secret: str) -> "tuple[int, int]":
@@ -32,12 +33,21 @@ def bullscows(guess: str, secret: str) -> "tuple[int, int]":
 
 
 def ask(prompt: str, valid: "list[str]" = None) -> str:
-    cow_skin = random.choice(cowsay.list_cows())
-    word = input(cowsay.cowsay(prompt, cow=cow_skin) + '\n')
+    cow_skin = cowsay.read_dot_cow(StringIO("""
+$the_cow = <<EOC;
+         $thoughts
+          $thoughts
+            ___
+           |-.-|
+            -|-
+            / \\
+EOC
+"""))
+    word = input(cowsay.cowsay(prompt, cowfile=cow_skin) + '\n')
 
     while not (valid is None or word in valid):
-        print(cowsay.cowsay(f"{word} is not a valid word! Try again", cow=cow_skin) + '\n')
-        word = input(cowsay.cowsay(prompt, cow=cow_skin) + '\n')
+        print(cowsay.cowsay(f"{word} is not a valid word! Try again", cowfile=cow_skin) + '\n')
+        word = input(cowsay.cowsay(prompt, cowfile=cow_skin) + '\n')
 
     return word
 
